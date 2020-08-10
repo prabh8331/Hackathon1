@@ -253,7 +253,7 @@ summary(Train1)
 library(randomForestSRC)
 rf<-rfsrc(Satisfaction~.,data = Train1[,-c(21,22)],mtry = 11)
 
-prediction<-predict.rfsrc(rf4,Test1[,-c(20,21)])
+prediction<-predict.rfsrc(rf,Test1[,-c(20,21)])
 Submission<-data.frame(ID=TestID,Satisfaction=prediction$class)
 write.csv(Submission,"Submission.csv",row.names = FALSE)
 
