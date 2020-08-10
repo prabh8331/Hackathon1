@@ -247,8 +247,36 @@ summary(Train1)
 #saveRDS(Train1,"Train1.RDS")
 #saveRDS(Test1,"Test1.RDS")
 
+########
+#dealing with high leverage points
+########
+#install.packages("faraway")
+#library(faraway)
+log_model=glm(Satisfaction~.,data=Train1,family="binomial")
+log_model
+#Selecting significant variables
+step(log_model)
+#model after removing variables which are not significant
+model<-glm(formula = Satisfaction ~ Seat_comfort + Departure.Arrival.time_convenient + 
+             Food_drink + Gate_location + Inflightwifi_service + Inflight_entertainment + 
+             Online_support + Ease_of_Onlinebooking + Onboard_service + 
+             Leg_room_service + Baggage_handling + Checkin_service + Cleanliness + 
+             Online_boarding + Gender + CustomerType + Age + TypeTravel + 
+             Class + Flight_Distance + ArrivalDelayin_Mins, family = "binomial", 
+           data = Train1)
 
+plot(model,6)
+plot(model,4)
+#n<-4/(3333-11)
+n=.0003
+length(which(cooks.distance(model)>n))
+which(cooks.distance(model)>n)
+Train1<-Train1[-which(cooks.distance(model)>n),]
+#saveRDS(Train1,"Train1.RDS")
+
+#####
 ##Model giving best result
+#####
 #install.packages("randomForestSRC")
 library(randomForestSRC)
 rf<-rfsrc(Satisfaction~.,data = Train1[,-c(21,22)],mtry = 11)
@@ -256,9 +284,5 @@ rf<-rfsrc(Satisfaction~.,data = Train1[,-c(21,22)],mtry = 11)
 prediction<-predict.rfsrc(rf,Test1[,-c(20,21)])
 Submission<-data.frame(ID=TestID,Satisfaction=prediction$class)
 write.csv(Submission,"Submission.csv",row.names = FALSE)
-
-
-
-
 
 
