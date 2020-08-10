@@ -22,8 +22,8 @@ names(STrain)
 names(FTrain)
 
 #Storing Id column for future use
-TestID<-FTest1$ID
-TrainID<-FTrain1$ID
+TestID<-FTest$ID
+TrainID<-FTrain$ID
 
 #sorting STest& STrain by its ID column
 STest<-STest[order(STest$ID),]
