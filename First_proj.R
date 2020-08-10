@@ -195,9 +195,60 @@ str(Train1)
 summary(Test1)
 str(Test1)
 
-saveRDS(Train1,"Train1.RDS")
-saveRDS(Test1,"Test1.RDS")
+#saveRDS(Train1,"Train1.RDS")
+#saveRDS(Test1,"Test1.RDS")
+
 
 #####Dealing With NA's
-#To deal with NA's replace  
-#Testing data
+#See the distribution of NA's using mice package
+library(mice)
+md.pattern(Test1)
+md.pattern(Train1)
+
+#looking data with NA,s
+Test1[which(!complete.cases(Test1)),]
+
+#Replacing NA's with MODE, MEAN or MEDIAN 
+#Test data
+Test1$Departure.Arrival.time_convenient[which(!complete.cases(Test1$Departure.Arrival.time_convenient))]<-"4"
+Test1$Food_drink[which(!complete.cases(Test1$Food_drink))]<-"3"
+Test1$Onboard_service[which(!complete.cases(Test1$Onboard_service))]<-"4"
+Test1$Cleanliness[which(!complete.cases(Test1$Cleanliness))]<-"4"
+Test1$Online_boarding[which(!complete.cases(Test1$Online_boarding))]<-"4"
+Test1$CustomerType[which(!complete.cases(Test1$CustomerType))]<-"1"
+Test1$TypeTravel[which(!complete.cases(Test1$TypeTravel))]<-"0"
+Test1$ArrivalDelayin_Mins[which(!complete.cases(Test1$ArrivalDelayin_Mins))]<-0
+summary(Test1)
+
+#Train data
+Train1$Seat_comfort[which(!complete.cases(Train1$Seat_comfort))]<-"3"
+Train1$Departure.Arrival.time_convenient[which(!complete.cases(Train1$Departure.Arrival.time_convenient))]<-"4"
+Train1$Food_drink[which(!complete.cases(Train1$Food_drink))]<-"3"
+Train1$Gate_location[which(!complete.cases(Train1$Gate_location))]<-"3"
+Train1$Inflightwifi_service[which(!complete.cases(Train1$Inflightwifi_service))]<-"4"
+Train1$Inflight_entertainment[which(!complete.cases(Train1$Inflight_entertainment))]<-"4"
+Train1$Online_support[which(!complete.cases(Train1$Online_support))]<-"4"
+Train1$Ease_of_Onlinebooking[which(!complete.cases(Train1$Ease_of_Onlinebooking))]<-"4"
+Train1$Onboard_service[which(!complete.cases(Train1$Onboard_service))]<-"4"
+Train1$Leg_room_service[which(!complete.cases(Train1$Leg_room_service))]<-"4"
+Train1$Baggage_handling[which(!complete.cases(Train1$Baggage_handling))]<-"4"
+Train1$Checkin_service[which(!complete.cases(Train1$Checkin_service))]<-"4"
+Train1$Gender[which(!complete.cases(Train1$Gender))]<-"0"
+Train1$CustomerType[which(!complete.cases(Train1$CustomerType))]<-"1"
+Train1$Age[which(!complete.cases(Train1$Age))]<-mean(Train1$Age,na.rm=TRUE)
+Train1$TypeTravel[which(!complete.cases(Train1$TypeTravel))]<-"0"
+Train1$DepartureDelayin_Mins[which(!complete.cases(Train1$DepartureDelayin_Mins))]<-0
+Train1$ArrivalDelayin_Mins[which(!complete.cases(Train1$ArrivalDelayin_Mins))]<-0
+
+boxplot(Train1$ArrivalDelayin_Mins,col = "lightblue",main="Boxplots")
+points(mean(Train1$ArrivalDelayin_Mins),col="red",pch=4)
+summary(Train1)
+
+#saveRDS(Train1,"Train1.RDS")
+#saveRDS(Test1,"Test1.RDS")
+
+
+
+
+
+
